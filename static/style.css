@@ -1,0 +1,237 @@
+:root{
+    --dark-blue: rgb(44, 101, 255);
+    --light-blue: rgb(135, 199, 255);
+    --bg-blue: rgb(86, 162, 255);
+    --green: rgb(91, 255, 91);
+}
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    transition: all 0.1s ease-in-out;
+}
+
+html,body{
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}
+
+@keyframes bgAnim {
+    0%{
+        background-image: url('../static/shapes.png');
+    } 50%{
+        background-image: url('../static/shapes2.png');
+    } 100%{
+        background-image: url('../static/shapes0.png');
+    }
+}
+
+body{
+    background-color: var(--bg-blue);
+    background-image: url('../static/shapes.png');
+    background-size: 200px;
+    animation:infinite 1s bgAnim;
+    animation-timing-function:step-end;
+}
+
+button{
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    outline: dashed var(--dark-blue) 6px;
+    border: none;
+    background-color: var(--light-blue);
+    color: black;
+    font-size: 30pt;
+    cursor: pointer;
+    color: var(--dark-blue);
+}
+
+button:active{
+    background-color: var(--dark-blue);
+    transform: rotate(1deg);
+}
+
+button:disabled{
+    opacity: 0.3;
+}
+button:active:disabled{
+    transform: none;
+    background-color: none !important;
+}
+
+#menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    padding: 18px;
+    align-items: center;
+
+    width: calc(100vw-(2*18px));
+}
+
+@keyframes sound-on {
+    0%{
+        background-image: url(./sound_on.png);
+    }
+    50%{
+        background-image: url(./sound_on2.png);
+    }
+    100%{
+        background-image: url(./sound_on.png);
+    }
+}
+@keyframes sound-off {
+    0%{
+        background-image: url(./sound_off.png);
+    }
+    50%{
+        background-image: url(./sound_off2.png);
+    }
+    100%{
+        background-image: url(./sound_off.png);
+    }
+}
+
+.sound-on{
+    width: 40px;
+    height: 40px;
+    aspect-ratio: 1/1;
+    background-image: url(./sound_on.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    animation:infinite 1s sound-on;
+    animation-timing-function:step-end;
+}
+.sound-off{
+    width: 40px;
+    height: 40px;
+    aspect-ratio: 1/1;
+    background-image: url(./sound_off.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    animation:infinite 1s sound-off;
+    animation-timing-function:step-end;
+}
+
+#first-screen{
+    display: none; /*flex*/
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 75%;
+    padding: 0;
+    margin: 0;
+}
+
+#room-menu{
+    background-color: var(--light-blue);
+    width: fit-content;
+    height: fit-content;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    outline: dashed var(--dark-blue) 6px;
+    border: none;
+    
+}
+
+#room-menu *{
+    font-size: 18pt;
+    margin: 10px;
+}
+
+#room-menu button{
+    outline-color: var(--dark-blue);
+    outline-width: 4px;
+    outline-style: solid;
+}
+
+hr{
+    border: none;
+    height: 2px;
+    background-color: var(--dark-blue);
+}
+
+
+input{
+    border: none;
+    outline: none;
+    border-radius: 10px;
+
+}
+
+@keyframes logo {
+    0%{
+        content: url('../static/logo.png');
+    } 50%{
+        content: url('../static/logo2.png');
+    } 100%{
+        content: url('../static/logo.png');
+    }
+}
+
+#logo{
+    width: 600px;
+    animation:infinite 1s logo;
+    animation-timing-function:step-end;
+}
+
+#room-screen{
+    display: flex; /*flex*/
+    width: 100%;
+    height: 80%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#room-screen button{
+    outline: 4px solid var(--dark-blue);
+    margin: 10px;
+}
+
+#room-screen-menu{
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    background-color: var(--light-blue);
+    outline: dashed 8px var(--dark-blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 95%;
+}
+
+#room-player-list{
+    list-style: none;
+    text-align: center;
+    list-style-position: inside;
+    width: 100%;
+    font-size: 20pt;
+}
+
+#room-player-list p, h1{
+    margin: 10px 5px;
+}   
+
+#room-code{
+    display: none; /*block*/
+    color: white;
+    font-size: 24pt;
+    position: fixed;
+    left: 2px;
+    bottom: 2px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+
+@media (max-width: 600px) {
+    #logo{
+        width: 250px;
+    }
+}

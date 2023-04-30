@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="https://cdn.socket.io/4.6.0/socket.io.js" crossorigin="anonymous"></script>
+    <script src="../static/common.js" type="module" crossorigin=""></script>
+
+    <title>Draw It</title>
+</head>
+<body>
+    <div id="menu"><button id="music-button" class="sound-off" data-music="off"></button></div>
+
+
+    <div id="first-screen">
+        <img id="logo" src="../static/logo.png" alt="">
+        <div id="room-menu">
+            <input type="text" placeholder="Username" id="username" name="username">
+            <br>
+            <button id="create-room-button">Create Room</button>
+            <hr>
+            <input type="text" placeholder="Room code" id="room-code" name="room-code">
+            <br>
+            <button id="join-room-button">Join Room </button>
+        </div>
+    </div>
+
+    <div id="room-screen">
+        <div id="room-screen-menu">
+            <h1>Players</h1>
+            <div id="room-player-list">
+                <p data-username="Név" class="room-player-username">Név</p>
+                <p data-username="Név" class="room-player-username">Név</p>
+                <p data-username="Név" class="room-player-username">Névefsefsrgsdrasdasdasa</p>
+                <p data-username="Név" class="room-player-username">Név</p>
+            </div>
+            <button id="room-start-button" disabled>Start</button>
+            <button id="room-leave-button">Leave</button>
+        </div>
+    </div>
+
+    <h1 id="room-code">LHYF</h1>
+
+
+</body>
+</html>
