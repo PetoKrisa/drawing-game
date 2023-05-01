@@ -15,13 +15,13 @@
 
 
     <div id="first-screen">
-        <img id="logo" src="../static/logo.png" alt="">
+        <img id="logo" src="../static/logo.png" alt="Draw It logo ">
         <div id="room-menu">
-            <input type="text" placeholder="Username" id="username" name="username">
+            <input type="text" placeholder="Username" maxlength="20" id="username-input" oninput="validateLogin()" name="username">
             <br>
             <button id="create-room-button">Create Room</button>
             <hr>
-            <input type="text" placeholder="Room code" id="room-code" name="room-code">
+            <input type="text" placeholder="Room code" maxlength="4" id="room-code-input" oninput="validateLogin()" name="room-code">
             <br>
             <button id="join-room-button">Join Room </button>
         </div>
@@ -31,10 +31,7 @@
         <div id="room-screen-menu">
             <h1>Players</h1>
             <div id="room-player-list">
-                <p data-username="Név" class="room-player-username">Név</p>
-                <p data-username="Név" class="room-player-username">Név</p>
-                <p data-username="Név" class="room-player-username">Névefsefsrgsdrasdasdasa</p>
-                <p data-username="Név" class="room-player-username">Név</p>
+
             </div>
             <button id="room-start-button" disabled>Start</button>
             <button id="room-leave-button">Leave</button>
@@ -43,6 +40,7 @@
 
     <h1 id="room-code">LHYF</h1>
 
+    <script src="../static/FormValidate.js"></script>
 
 </body>
 </html>
