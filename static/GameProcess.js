@@ -22,20 +22,26 @@ export default class GameProcess{
             console.log(this.username)
         })
 
+        this.document.getElementById('room-code-input').addEventListener('input', (e)=>{
+            this.document.getElementById('room-code-input').value = this.document.getElementById('room-code-input').value.toUpperCase()
+        })
+
         this.document.getElementById('room-leave-button').addEventListener('click', (e)=>{
             this.Room.leave()
         })
-        this.document.getElementById('room-leave-button').addEventListener('click', (e)=>{
-            this.Room.leave()
+        this.document.getElementById('room-start-button').addEventListener('click', (e)=>{
+            if(this.document.getElementById("room-start-button").disabled == false){
+                this.Room.start()
+            }
         })
     }
 
-    setScreen(id){
-        for(let i = 1; i <= 2; i++){
+    setScreen(num){
+        for(let i = 1; i <= 3; i++){
             this.document.getElementById(this.screens[i]).style.display = 'none'
         }
-        this.document.getElementById(this.screens[id]).style.display = 'flex'
-        if(id>1){
+        this.document.getElementById(this.screens[num]).style.display = 'flex'
+        if(num>1){
             this.document.getElementById("room-code").style.display = 'block'
         } else{
             this.document.getElementById("room-code").style.display = 'none'
@@ -44,6 +50,14 @@ export default class GameProcess{
 
     updateCode(code){
         this.document.getElementById('room-code').innerText = code
+    }
+
+    canDraw(){
+        if(this.Room.canDraw){
+            return true
+        } else{
+            return false
+        }
     }
     
 }

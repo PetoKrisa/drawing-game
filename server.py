@@ -33,7 +33,7 @@ def apiCreateRoom():
         if(gameRooms[i]['code']==randomId):
             return Response(response=':(', status=500)
 
-    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 120, 'players': [], 'canvas': []})
+    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 120, 'players': [], 'canvas': [], 'word': ''})
     return jsonify({'code': randomId})
 
 @app.route('/api/isRoomExists')
@@ -55,15 +55,16 @@ def ioConnect():
 
 @io.on('disconnect')
 def ioDisconnect():
-    usersRoom = rooms()
-    if len(usersRoom)>1:
+    if len(rooms())>1:
         usersRoom = rooms()[-1]
+    print(usersRoom)
     for i in range(len(gameRooms)):
             if gameRooms[i]['code'] == usersRoom:
                 for p in range(len(gameRooms[i]['players'])):
                     if(gameRooms[i]['players'][p]['sid'] == request.sid):
                         gameRooms[i]['players'].pop(p)
-    
+                        io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
+                        
     print(gameRooms)
 
 @io.on('joinRoomWithCode')
@@ -77,7 +78,8 @@ def joinRoomWithCode(data):
                     gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'score': 0, 'canDraw': False, 'leader':True})
                 else:
                     gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'score': 0, 'canDraw': False, 'leader':False})
-            io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
+                io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
+                break   
     print(gameRooms)
 
 @io.on('sendUserdataToRoom')
@@ -110,6 +112,14 @@ def userLeaveRoom():
                 gameRooms.pop(i)
     leave_room(usersRoom)
     print(gameRooms)
+
+@io.on('start')
+def ioStart():
+    usersRoom = rooms()[-1]
+    for i in range(len(gameRooms)):
+        if gameRooms[i]['code'] == usersRoom:
+            gameRooms[i]['gameStarted'] = True
+            io.emit('start', gameRooms[i], to=usersRoom)
 
 if __name__ == '__main__':
     io.run(app=app, host='0.0.0.0', port=3000, debug=True)

@@ -21,4 +21,5 @@ musicButton.addEventListener('click',(e)=>{
 
 var mainProcess = new GameProcess(document)
 mainProcess.setScreen(1)
+mainProcess.Canvas.clear()
 

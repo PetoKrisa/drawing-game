@@ -17,6 +17,18 @@ html,body{
     padding: 0px;
 }
 
+#main-canvas{
+    background-color: whitesmoke;
+    background-image: url('./paper.jpg');
+    aspect-ratio: 4/3;
+    min-width: 40vw;
+    max-width: 95%;
+
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    outline: dashed var(--dark-blue) 6px;
+    border: none;
+}
+
 @keyframes bgAnim {
     0%{
         background-image: url('../static/shapes.png');
@@ -216,7 +228,7 @@ input{
     font-size: 20pt;
 }
 
-#room-player-list p, h1{
+#room-player-list p, #room-player-list h1{
     margin: 10px 5px;
 }   
 
@@ -230,8 +242,56 @@ input{
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
 }
 
+#game-screen{
+    display: none; /*flex*/
+    width: 100%;
+    height: 80%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-player-list{
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    background-color: var(--light-blue);
+    outline: dashed 8px var(--dark-blue);
+    margin: 30px;
+    min-height: 50%;
+    max-height: 80%;
+    max-width: 40vh;
+    font-size: 16pt;
+}
+
+#game-player-list p, #game-player-list h1{
+    margin: 10px 5px;
+}  
+
+#timer{
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    margin: 10px;
+    transform: translateX(-50%);
+    -webkit-text-stroke: 1px var(--dark-blue);
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+
+}
+
 @media (max-width: 600px) {
     #logo{
         width: 250px;
+    }
+    #main-canvas{
+     width: 85vw;
+
+    }
+    #game-screen{
+        flex-direction: column;
+    }
+    #game-player-list{
+        max-width: 85vw;
+        min-height: 20px;
+        
     }
 }
