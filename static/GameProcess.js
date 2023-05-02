@@ -53,6 +53,7 @@ export default class GameProcess{
     }
 
     canDraw(){
+        console.log('can draw called')
         if(this.Room.canDraw){
             return true
         } else{

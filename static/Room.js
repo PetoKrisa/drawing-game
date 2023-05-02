@@ -3,6 +3,8 @@ import GameProcess from "./gameprocess.js"
 export default class Room{
     constructor(GameProcess, socket){
         this.GameProcess = GameProcess
+        this.socket = socket
+
         this.code = null
         this.players = []
         this.drawingPlayer = 0 //leaders can use
@@ -12,14 +14,19 @@ export default class Room{
             if(this.time>0){
                 this.GameProcess.document.getElementById('timer').innerHTML = `${this.time}s`
                 this.time--
+            } else if (this.time==0 && this.gameStarted == true){
+                if  (this.leader){
+                    console.log('started new round')
+                    this.socket.emit('nextRound')
+                }
             }
         }, 1000)
 
         this.leader = false
         this.points = 0
-        this.socket = socket
         this.canDraw = true
         this.word = ''
+        this.round = 0
 
         this.GameProcess.document.getElementById('join-room-button').addEventListener('click', (e)=>{
             if (this.GameProcess.document.getElementById('join-room-button').disabled == false){
@@ -34,14 +41,17 @@ export default class Room{
             this.word = data['word']
             this.round = data['round']
             if(this.leader){
-                
+                console.log('started first round')
+                this.socket.emit('nextRound')
             }
         })
 
         this.socket.on('sendRoomdataToUser', (data)=>{
             console.log(data)
             this.players = data['players']
-            this.timer = data['time']
+            this.time = data['time']
+            this.round = data['round']
+            this.word = data['word']
             this.updatePlayerList()
             for(let i = 0; i < data['players'].length;i++){
                 if(this.socket.id == data['players'][i]['sid'] &&  data['players'][i]['leader']){
@@ -49,6 +59,7 @@ export default class Room{
                 }
                 if(this.socket.id == data['players'][i]['sid'] && data['players'][i]['canDraw']){
                     this.canDraw = true
+                    console.log('can draw changed to true')
                 } else{
                     this.canDraw = false
                 }
@@ -61,6 +72,7 @@ export default class Room{
         })
 
         this.socket.on('roomClosed', ()=>{
+            alert('The original leader left, or the game has ended!')
             this.reset()
         })
 
@@ -135,6 +147,7 @@ export default class Room{
         this.points = 0;
         this.timer = 0;
         this.players = [];
+        this.round = 0;
         this.gameStarted = false
         this.GameProcess.setScreen(1) 
     }

@@ -35,7 +35,7 @@ def apiCreateRoom():
         if(gameRooms[i]['code']==randomId):
             return Response(response=':(', status=500)
 
-    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 120, 'players': [], 'canvas': [], 'word': ''})
+    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 5, 'players': [], 'canvas': [], 'word': ''})
     return jsonify({'code': randomId})
 
 @app.route('/api/isRoomExists')
@@ -123,5 +123,28 @@ def ioStart():
             gameRooms[i]['gameStarted'] = True
             io.emit('start', gameRooms[i], to=usersRoom)
 
+@io.on('nextRound')
+def ioNextround():
+    usersRoom = rooms()[-1]
+    for i in range(len(gameRooms)):
+        if gameRooms[i]['code'] == usersRoom:
+            gameRooms[i]['round'] +=1
+            gameRooms[i]['word'] = random.choice(wordBank)
+            
+            if(len(gameRooms[i]['players']) == gameRooms[i]['round']-1):
+                io.emit('roomClosed', to=usersRoom)
+                gameRooms[i]['round'] = 0
+                gameRooms[i]['gameStarted'] = False
+                gameRooms[i]['word'] = ''
+                break
+            
+            for p in range(len(gameRooms[i]['players'])):
+                gameRooms[i]['players'][p]['canDraw'] = False
+            gameRooms[i]['players'][gameRooms[i]['round']-1]['canDraw'] = True
+            
+            io.emit('sendRoomdataToUser',  gameRooms[i], to=usersRoom)
+            break
+                    
+                    
 if __name__ == '__main__':
     io.run(app=app, host='0.0.0.0', port=3000, debug=True)

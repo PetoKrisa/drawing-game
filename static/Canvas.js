@@ -43,7 +43,6 @@ export default class Canvas{
 
         this.canvas.addEventListener('mousemove', (e)=>{
             if(this.GameProcess.canDraw()){
-                
                 var rect = this.canvas.getBoundingClientRect()
                 var scaleX = canvas.width / rect.width;
                 var scaleY = canvas.height / rect.height; 

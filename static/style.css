@@ -266,7 +266,7 @@ input{
     margin: 10px 5px;
 }  
 
-#timer{
+#timer, #round,#word{
     position: fixed;
     top: 0px;
     left: 50%;
@@ -275,7 +275,9 @@ input{
     -webkit-text-stroke: 1px var(--dark-blue);
     color: white;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
-
+}
+#round{
+    top: 18pt;
 }
 
 @media (max-width: 600px) {
