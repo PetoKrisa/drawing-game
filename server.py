@@ -10,6 +10,8 @@ io = SocketIO(app)
 
 gameRooms = []
 letters = 'ABCDEFGHIJKLMNOPQRSTVWXYZ'
+with open('wordbank.txt') as wordsFile:
+    wordBank = wordsFile.read().split('\n')
 
 @app.route('/static/<path>')
 def staticPathFix(path):

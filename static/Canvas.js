@@ -15,7 +15,7 @@ export default class Canvas{
         this.actions = []
 
         this.canvas.addEventListener('mousedown', (e)=>{
-
+            if(this.GameProcess.canDraw()){
             var rect = this.canvas.getBoundingClientRect()
             var scaleX = canvas.width / rect.width;
             var scaleY = canvas.height / rect.height; 
@@ -34,6 +34,7 @@ export default class Canvas{
 
                 console.log('right down', this.isRClick)
             }
+        }
         })
 
         this.GameProcess.document.addEventListener('contextmenu',(e)=>{
