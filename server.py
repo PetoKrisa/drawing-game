@@ -130,6 +130,8 @@ def ioNextround():
         if gameRooms[i]['code'] == usersRoom:
             gameRooms[i]['round'] +=1
             gameRooms[i]['word'] = random.choice(wordBank)
+
+            print(gameRooms[i]['players'])
             
             if(len(gameRooms[i]['players']) == gameRooms[i]['round']-1):
                 io.emit('roomClosed', to=usersRoom)

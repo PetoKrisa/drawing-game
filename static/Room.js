@@ -51,6 +51,7 @@ export default class Room{
             this.players = data['players']
             this.time = data['time']
             this.round = data['round']
+            document.getElementById('round').innerHTML = `Round ${this.round}/${this.players.length}`
             this.word = data['word']
             this.updatePlayerList()
             for(let i = 0; i < data['players'].length;i++){
@@ -60,9 +61,12 @@ export default class Room{
                 if(this.socket.id == data['players'][i]['sid'] && data['players'][i]['canDraw']){
                     this.canDraw = true
                     console.log('can draw changed to true')
+                    console.log("candraw",this.canDraw)
                 } else{
                     this.canDraw = false
                 }
+                console.log(this.players)
+
             }
             if(data['players'].length>1){
                 this.GameProcess.document.getElementById("room-start-button").disabled = false
