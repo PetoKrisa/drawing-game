@@ -1,8 +1,10 @@
 export default class Canvas{
-    constructor(GameProcess, canvas){
+    constructor(GameProcess, socket, canvas){
         this.GameProcess = GameProcess
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
+
+        this.socket = 
 
         this.width = this.canvas.width
         this.height = this.canvas.height
@@ -14,6 +16,9 @@ export default class Canvas{
 
         this.actions = []
 
+        this.color = 'black'
+        this.lineWidth = 6
+
         this.canvas.addEventListener('mousedown', (e)=>{
             if(this.GameProcess.canDraw()){
             var rect = this.canvas.getBoundingClientRect()
@@ -23,14 +28,14 @@ export default class Canvas{
             if(e.button == 0){
                 this.isClick = true
                 console.log('down', this.isClick)
+                this.ctx.fillSytle = this.color
                 this.ctx.beginPath();
-                this.ctx.arc((e.clientX-rect.left)*scaleX, (e.clientY-rect.top)*scaleY, 7   , 0, 2 * Math.PI);
+                this.ctx.arc((e.clientX-rect.left)*scaleX, (e.clientY-rect.top)*scaleY, this.lineWidth, 0, 2 * Math.PI);
                 this.ctx.fill();
-
 
             } else if(e.button == 2){
                 this.isRClick = true
-                this.ctx.clearRect((e.clientX-rect.left)*scaleX-10, (e.clientY-rect.top)*scaleY-10, 20, 20);
+                this.ctx.clearRect((e.clientX-rect.left)*scaleX-10, (e.clientY-rect.top)*scaleY-10, this.lineWidth*3, this.lineWidth*3);
 
                 console.log('right down', this.isRClick)
             }

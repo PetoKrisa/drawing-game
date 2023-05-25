@@ -24,7 +24,7 @@ export default class Room{
 
         this.leader = false
         this.points = 0
-        this.canDraw = true
+        this.canDraw = false
         this.word = ''
         this.round = 0
 
@@ -50,25 +50,42 @@ export default class Room{
             console.log(data)
             this.players = data['players']
             this.time = data['time']
-            this.round = data['round']
+            if(data['round']!=this.round){
+                this.GameProcess.Canvas.clear()
+                this.round = data['round']
+            }
             document.getElementById('round').innerHTML = `Round ${this.round}/${this.players.length}`
             this.word = data['word']
+            
             this.updatePlayerList()
             for(let i = 0; i < data['players'].length;i++){
-                if(this.socket.id == data['players'][i]['sid'] &&  data['players'][i]['leader']){
+                if(this.socket.id == data['players'][i]['sid'] && data['players'][i]['leader']){
                     this.leader = true
                 }
                 if(this.socket.id == data['players'][i]['sid'] && data['players'][i]['canDraw']){
                     this.canDraw = true
                     console.log('can draw changed to true')
                     console.log("candraw",this.canDraw)
-                } else{
+                } else if(this.socket.id == data['players'][i]['sid'] && !data['players'][i]['canDraw']){
                     this.canDraw = false
                 }
-                console.log(this.players)
-
             }
-            if(data['players'].length>1){
+
+            this.GameProcess.document.getElementById("word").innerText = ''
+            if(this.canDraw){
+                this.GameProcess.document.getElementById("word").innerText = this.word
+            } else{
+                let wordtmp = ''
+                for(let i = 0; i < this.word.length; i++){
+                    if(this.word[i]==' '){
+                        wordtmp.concat(' ')
+                    } else{
+                        wordtmp.concat('_')
+                    }
+                }
+            }
+
+            if(data['players'].length>1 && this.leader){
                 this.GameProcess.document.getElementById("room-start-button").disabled = false
             } else{
                 this.GameProcess.document.getElementById("room-start-button").disabled = true
@@ -153,7 +170,9 @@ export default class Room{
         this.players = [];
         this.round = 0;
         this.gameStarted = false
-        this.GameProcess.setScreen(1) 
+        this.GameProcess.Canvas.clear()
+        this.GameProcess.setScreen(1)
+        this.socket.emit('leaveSocket', this.socket.id)
     }
 
     start(){

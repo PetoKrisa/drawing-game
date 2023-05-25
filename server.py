@@ -35,7 +35,7 @@ def apiCreateRoom():
         if(gameRooms[i]['code']==randomId):
             return Response(response=':(', status=500)
 
-    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 5, 'players': [], 'canvas': [], 'word': ''})
+    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 10, 'players': [], 'canvas': [], 'word': ''})
     return jsonify({'code': randomId})
 
 @app.route('/api/isRoomExists')
@@ -87,7 +87,11 @@ def joinRoomWithCode(data):
 @io.on('sendUserdataToRoom')
 def sendUserdataToRoom(data):
     pass
-  
+
+@io.on('leaveSocket')
+def ioLeaveSocket(id):
+    if len(rooms(id))>1:
+        leave_room(id)
 
 @io.on('userLeaveRoom')
 def userLeaveRoom():
@@ -109,8 +113,8 @@ def userLeaveRoom():
             if leaders<1:
                 print('leader not found')
                 io.emit('roomClosed', to=gameRooms[i]['code'])
-                for dp in gameRooms[i]['players']:
-                    leave_room(gameRooms[i]['code'], dp['sid'])
+                for p in gameRooms[i]['users']:
+                    leave_room(gameRooms[i]['code'], p['sid'])
                 gameRooms.pop(i)
     leave_room(usersRoom)
     print(gameRooms)
@@ -138,6 +142,9 @@ def ioNextround():
                 gameRooms[i]['round'] = 0
                 gameRooms[i]['gameStarted'] = False
                 gameRooms[i]['word'] = ''
+                for p in gameRooms[i]['users']:
+                    leave_room(gameRooms[i]['code'], p['sid'])
+                gameRooms.pop(i)
                 break
             
             for p in range(len(gameRooms[i]['players'])):

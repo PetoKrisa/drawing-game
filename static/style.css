@@ -279,6 +279,9 @@ input{
 #round{
     top: 18pt;
 }
+#word{
+    top: 40pt;
+}
 
 @media (max-width: 600px) {
     #logo{
