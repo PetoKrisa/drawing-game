@@ -9,7 +9,7 @@ export default class GameProcess{
         this.screen = 1
         this.username = null
         this.Room = new Room(this, this.socket)
-        this.Canvas = new Canvas(this, document.getElementById("main-canvas"))
+        this.Canvas = new Canvas(this, this.socket, document.getElementById("main-canvas"))
 
         this.document.getElementById('create-room-button').addEventListener('click', (e)=>{
             if (this.document.getElementById('create-room-button').disabled == false){

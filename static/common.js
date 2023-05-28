@@ -20,6 +20,6 @@ musicButton.addEventListener('click',(e)=>{
 })
 
 var mainProcess = new GameProcess(document)
-mainProcess.setScreen(1)
+mainProcess.setScreen(3) //debug
 mainProcess.Canvas.clear()
 

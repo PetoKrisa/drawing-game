@@ -35,7 +35,7 @@ def apiCreateRoom():
         if(gameRooms[i]['code']==randomId):
             return Response(response=':(', status=500)
 
-    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 10, 'players': [], 'canvas': [], 'word': ''})
+    gameRooms.append({'code': randomId, 'gameStarted': False, 'round':0, 'time': 80, 'guessed':0, 'players': [], 'canvas': [], 'word': ''})
     return jsonify({'code': randomId})
 
 @app.route('/api/isRoomExists')
@@ -59,14 +59,13 @@ def ioConnect():
 def ioDisconnect():
     if len(rooms())>1:
         usersRoom = rooms()[-1]
-    print(usersRoom)
+        print(usersRoom)
     for i in range(len(gameRooms)):
             if gameRooms[i]['code'] == usersRoom:
                 for p in range(len(gameRooms[i]['players'])):
                     if(gameRooms[i]['players'][p]['sid'] == request.sid):
                         gameRooms[i]['players'].pop(p)
-                        io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
-                        
+                        io.emit('points', gameRooms[i], to=usersRoom)  
     print(gameRooms)
 
 @io.on('joinRoomWithCode')
@@ -77,10 +76,12 @@ def joinRoomWithCode(data):
         for i in range(len(gameRooms)):
             if gameRooms[i]['code'] == usersRoom:
                 if len(gameRooms[i]['players']) == 0:
-                    gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'score': 0, 'canDraw': False, 'leader':True})
+                    gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'points': 0, 'canDraw': False, 'leader':True})
                 else:
-                    gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'score': 0, 'canDraw': False, 'leader':False})
+                    gameRooms[i]['players'].append({'sid': request.sid, 'username': data['username'], 'points': 0, 'canDraw': False, 'leader':False})
                 io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
+                io.emit('sendRoomdataToUser', gameRooms[i], to=usersRoom)
+
                 break   
     print(gameRooms)
 
@@ -132,8 +133,12 @@ def ioNextround():
     usersRoom = rooms()[-1]
     for i in range(len(gameRooms)):
         if gameRooms[i]['code'] == usersRoom:
+            if gameRooms[i]['round'] > 0:
+                io.emit('chat', {'msg': f'The word was: {gameRooms[i]["word"]}', 'color': 'orange', 'points': 0})
+
             gameRooms[i]['round'] +=1
             gameRooms[i]['word'] = random.choice(wordBank)
+            gameRooms[i]['guessed'] = 0
 
             print(gameRooms[i]['players'])
             
@@ -153,7 +158,26 @@ def ioNextround():
             
             io.emit('sendRoomdataToUser',  gameRooms[i], to=usersRoom)
             break
-                    
+
+@io.on('draw')
+def ioDraw(data):
+    io.emit('draw', data, to=rooms()[-1])
+
+@io.on('chat')
+def ioChat(data):
+    usersRoom = rooms()[-1]
+    print(data)
+    if(data['points']>0):
+        for i in gameRooms:
+            if(i['code'] == usersRoom):
+                i['guessed'] += 1
+                for p in i['players']:
+                    if p['sid'] == request.sid:
+                        p['points'] += data['points']
+                        io.emit('points', i, to=usersRoom)
+
+    
+    io.emit('chat',data,to=usersRoom)
                     
 if __name__ == '__main__':
     io.run(app=app, host='0.0.0.0', port=3000, debug=True)

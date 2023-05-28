@@ -4,7 +4,7 @@ export default class Canvas{
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
 
-        this.socket = 
+        this.socket = socket
 
         this.width = this.canvas.width
         this.height = this.canvas.height
@@ -20,24 +20,27 @@ export default class Canvas{
         this.lineWidth = 6
 
         this.canvas.addEventListener('mousedown', (e)=>{
+            
             if(this.GameProcess.canDraw()){
             var rect = this.canvas.getBoundingClientRect()
             var scaleX = canvas.width / rect.width;
             var scaleY = canvas.height / rect.height; 
+            
+            
 
             if(e.button == 0){
                 this.isClick = true
-                console.log('down', this.isClick)
-                this.ctx.fillSytle = this.color
                 this.ctx.beginPath();
+                this.ctx.fillStyle = this.color
                 this.ctx.arc((e.clientX-rect.left)*scaleX, (e.clientY-rect.top)*scaleY, this.lineWidth, 0, 2 * Math.PI);
                 this.ctx.fill();
+                this.socket.emit('draw', {'mode':1,'width':this.lineWidth, 'color':this.color, 'x':(e.clientX-rect.left)*scaleX, 'y':(e.clientY-rect.top)*scaleY})
 
             } else if(e.button == 2){
                 this.isRClick = true
-                this.ctx.clearRect((e.clientX-rect.left)*scaleX-10, (e.clientY-rect.top)*scaleY-10, this.lineWidth*3, this.lineWidth*3);
+                this.ctx.clearRect((e.clientX-rect.left)*scaleX-(this.lineWidth*3/2), (e.clientY-rect.top)*scaleY-(this.lineWidth*3/2), this.lineWidth*3, this.lineWidth*3);
+                this.socket.emit('draw', {'mode':2,'width':this.lineWidth*3, 'color':this.color, 'x':(e.clientX-rect.left)*scaleX-(this.lineWidth*3/2), 'y':(e.clientY-rect.top)*scaleY-(this.lineWidth*3/2)})
 
-                console.log('right down', this.isRClick)
             }
         }
         })
@@ -48,20 +51,24 @@ export default class Canvas{
 
         this.canvas.addEventListener('mousemove', (e)=>{
             if(this.GameProcess.canDraw()){
+                console.log('drawing')
                 var rect = this.canvas.getBoundingClientRect()
                 var scaleX = canvas.width / rect.width;
                 var scaleY = canvas.height / rect.height; 
                 
                 if(this.isClick){
                     console.log('drawing')
-                    
+                    this.ctx.fillStyle = this.color
                     this.ctx.beginPath();
-                    this.ctx.arc((e.clientX-rect.left)*scaleX, (e.clientY-rect.top)*scaleY, 7, 0, 2 * Math.PI);
+                    this.ctx.arc((e.clientX-rect.left)*scaleX, (e.clientY-rect.top)*scaleY, this.lineWidth, 0, 2 * Math.PI);
                     this.ctx.fill();
-                } else if (this.isRClick){
+                    this.socket.emit('draw', {'mode':1,'width':this.lineWidth, 'color':this.color, 'x':(e.clientX-rect.left)*scaleX, 'y':(e.clientY-rect.top)*scaleY})
 
-                    this.ctx.clearRect((e.clientX-rect.left)*scaleX-10, (e.clientY-rect.top)*scaleY-10, 20, 20);
+                } else if (this.isRClick){
+                    this.ctx.clearRect((e.clientX-rect.left)*scaleX-(this.lineWidth*3/2), (e.clientY-rect.top)*scaleY-(this.lineWidth*3/2), this.lineWidth*3, this.lineWidth*3);
                     console.log('erasing')
+                    this.socket.emit('draw', {'mode':2,'width':this.lineWidth*3, 'color':this.color, 'x':(e.clientX-rect.left)*scaleX-(this.lineWidth*3/2), 'y':(e.clientY-rect.top)*scaleY-(this.lineWidth*3/2)})
+
                 }
             }
 
@@ -69,16 +76,29 @@ export default class Canvas{
         this.canvas.addEventListener('mouseup', (e)=>{
             if(e.button == 0){
                 this.isClick = false
-                console.log('up', this.isClick)
             } else if(e.button == 2){
                 this.isRClick = false
-                console.log('right up', this.isRClick)
             }
         })
 
         this.canvas.addEventListener('mouseleave', (e)=>{
             this.isClick = false;
             this.isRClick = false;
+        })
+
+        this.socket.on('draw', (data)=>{
+            console.log('draw event')
+            if(!this.canDraw){
+                if(data['mode']==1){
+                    this.ctx.fillStyle = data['color']
+                    this.ctx.beginPath();
+                    this.ctx.arc(data['x'], data['y'], data['width'], 0, 2 * Math.PI);
+                    this.ctx.fill();
+                } else if(data['mode']==2){
+                    this.ctx.clearRect(data['x'], data['y'], data['width'], data['width']);
+
+                }
+            }
         })
     }
 
