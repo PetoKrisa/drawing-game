@@ -193,6 +193,7 @@ export default class Room{
         fetch(`/api/isRoomExists?code=${code}`).then(r=>{
             if(r.status == 200){
                 this.GameProcess.socket.emit('joinRoomWithCode', {'username': this.GameProcess.username, 'code':code})
+                this.GameProcess.socket.emit('joinRoomWithCode', {'username': this.GameProcess.username, 'code':code})
                 this.code = code
                 this.GameProcess.setScreen(2)
                 this.GameProcess.updateCode(this.code)
