@@ -81,6 +81,9 @@ button:active:disabled{
 
     width: calc(100vw-(2*18px));
 }
+#menu *{
+    margin: 0px 10px;
+}
 
 @keyframes sound-on {
     0%{
@@ -126,6 +129,30 @@ button:active:disabled{
     background-size: contain;
     animation:infinite 1s sound-off;
     animation-timing-function:step-end;
+}
+
+.tutorial{
+    width: 40px;
+    height: 40px;
+    aspect-ratio: 1/1;
+    background-image: url(./sound_on.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    animation:infinite 1s tutorial;
+    animation-timing-function:step-end;
+}
+
+@keyframes tutorial{
+    0%{
+        background-image: url(./questionmark1.png);
+    }
+    50%{
+        background-image: url(./questionmark2.png);
+    }
+    100%{
+        background-image: url(./questionmark2.png);
+    }
 }
 
 #first-screen{
@@ -339,13 +366,88 @@ input{
     padding-top: auto;
 }
 
+#toolbar{
+    position: fixed;
+    bottom: 0;
+    background-color: var(--light-blue);
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    font-size: 18pt;
+    cursor: default;
+    user-select: none;
+}
+
+#toolbar input[type=number]{
+    font-size: 18pt;
+    width: 50px;
+}
+#toolbar input[type=radio]{
+    appearance: none;
+    border: none;
+    height: 20px;
+    width: 20px;
+
+    position: relative;
+    top: 4px;
+    outline: 1px solid #a3a3a3;
+}
+#toolbar input[type=radio]:checked{
+    appearance: none;
+    outline: 3px solid #000000;
+}
+
+#tutorial-dialog{
+    background-color: var(--bg-blue);
+    border: none;
+    border-radius: 15px;
+    max-width: 95%;
+    max-height: 95%;
+    width: min-content;
+}
+
+#tutorial-dialog::backdrop{
+    background-color: rgba(0, 0, 0, 0.5 );
+}
+
+#tutorial-dialog:focus{
+    border: none;
+    outline: none;
+}
+#tutorial-dialog button{
+    border: none;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+#tutorial-img{
+    width: 400px;
+    height: 300px;
+    aspect-ratio: 4/3;
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+}
+
+dialog *{
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+#tutorial-h1{
+    color: white;
+    margin: 2px;
+    text-align: center;
+    -webkit-text-stroke: 1px var(--dark-blue);
+
+}
+
 @media (max-width: 600px) {
     #logo{
         width: 250px;
     }
     #main-canvas{
      width: 85vw;
-
     }
     #game-screen{
         margin-top: 50px;

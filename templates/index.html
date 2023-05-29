@@ -11,7 +11,10 @@
     <title>Draw It</title>
 </head>
 <body>
-    <div id="menu"><button id="music-button" class="sound-off" data-music="off"></button></div>
+    <div id="menu">
+        <button id="tutorial-button" class="tutorial"></button>
+        <button id="music-button" class="sound-off" data-music="off"></button>
+    </div>
 
 
     <div id="first-screen">
@@ -53,9 +56,33 @@
             </div>
             <div id="chat-input-div"><input id="chat-input" name="chat-input" type="text"><button id="chat-send-button">Send</button></div>
         </div>
+
+        <div id="toolbar">
+            <input type="number" id="width-input" name="width-input" min="3" max="30" step="3" value="6">
+            <input type="radio" name="color-input" class="color-input" value="white" style="background-color: white;">
+            <input type="radio" name="color-input" class="color-input" value="gray" style="background-color: gray;">
+            <input type="radio" name="color-input" class="color-input" value="black" style="background-color: black;" checked>
+            <input type="radio" name="color-input" class="color-input" value="red" style="background-color: red;">
+            <input type="radio" name="color-input" class="color-input" value="darkred" style="background-color: darkred;">
+            <input type="radio" name="color-input" class="color-input" value="lightblue" style="background-color: lightblue;">
+            <input type="radio" name="color-input" class="color-input" value="blue" style="background-color: blue;">
+            <input type="radio" name="color-input" class="color-input" value="limegreen" style="background-color: limegreen;">
+            <input type="radio" name="color-input" class="color-input" value="green" style="background-color: green;">
+            <input type="radio" name="color-input" class="color-input" value="yellow" style="background-color: yellow;">
+            <input type="radio" name="color-input" class="color-input" value="orange" style="background-color: orange;">
+            <input type="radio" name="color-input" class="color-input" value="brown" style="background-color: brown;">
+        </div>
     </div>
 
     <h1 id="room-code">CODE</h1>
+
+    <dialog id="tutorial-dialog">
+        <h1 id="tutorial-h1"></h1>
+        <img src="" alt="" id="tutorial-img">
+        <br>
+        <br>
+        <button id="tutorial-next" >Next</button>
+    </dialog>
 
     <script src="../static/FormValidate.js"></script>
 

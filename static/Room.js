@@ -90,7 +90,9 @@ export default class Room{
             this.GameProcess.document.getElementById("word").innerText = ''
             if(this.canDraw){
                 this.GameProcess.document.getElementById("word").innerText = this.word
+                this.GameProcess.document.getElementById("toolbar").style.display = 'block'
             } else{
+                this.GameProcess.document.getElementById("toolbar").style.display = 'none'
                 let wordtmp = ''
                 for(let i = 0; i < this.word.length; i++){
                     if(this.word[i]==' '){
@@ -140,6 +142,8 @@ export default class Room{
             chatdiv.innerHTML = chatdiv.innerHTML + `<p style="color:${data['color']};">${data['msg']}</p>`
             chatdiv.scrollTo(0, chatdiv.scrollHeight)
         })
+
+        
     }
 
     updatePlayerList(){

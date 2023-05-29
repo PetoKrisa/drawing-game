@@ -10,7 +10,7 @@ io = SocketIO(app)
 
 gameRooms = []
 letters = 'ABCDEFGHIJKLMNOPQRSTVWXYZ'
-with open('wordbank.txt') as wordsFile:
+with open('wordbank.txt', 'r', encoding='utf-8') as wordsFile:
     wordBank = wordsFile.read().split('\n')
 
 @app.route('/static/<path>')
@@ -180,4 +180,4 @@ def ioChat(data):
     io.emit('chat',data,to=usersRoom)
                     
 if __name__ == '__main__':
-    io.run(app=app, host='0.0.0.0', port=3000, debug=True)
+    io.run(app=app, host='0.0.0.0', port=80, debug=True)

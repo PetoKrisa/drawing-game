@@ -19,6 +19,23 @@ export default class Canvas{
         this.color = 'black'
         this.lineWidth = 6
 
+        this.GameProcess.document.getElementById("width-input").addEventListener('input',(e)=>{
+            this.lineWidth = e.target.value
+        })
+        this.radioButtons = this.GameProcess.document.querySelectorAll(".color-input")
+
+        for(let i = 0; i < this.radioButtons.length; i++){
+            this.radioButtons[i].addEventListener('click', (e)=>{
+                console.log('radio button click')
+                for(let btn = 0; btn < this.radioButtons.length; btn++){
+                    if(this.radioButtons[btn].checked){
+                        this.color = this.radioButtons[btn].value
+                    }
+                }
+            })
+        }
+
+        
         this.canvas.addEventListener('mousedown', (e)=>{
             
             if(this.GameProcess.canDraw()){
